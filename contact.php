@@ -26,6 +26,10 @@
 
 <?php
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+    $userEmail = sanitiseData($_POST['inputEmail']);
+    $userMessage = sanitiseData($_POST['inputMessage']);
+
     $formError = false;
     if (empty($_POST['inputEmail'])) {
         $formError = true;
@@ -37,12 +41,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
     if ($formError == false) {
 
+        $csvFile = fopen(  "contact.csv", "a");
+        fwrite($csvFile, $userEmail. ",".$userMessage);
+        fclose($csvFile);
 
-        $emailAddress = $_POST['inputEmail'];
-        $messageSubmitted = $_POST['inputMessage'];
-        echo $emailAddress;
-        echo "<p>";
-        echo $messageSubmitted;
     }
 }
 ?>
