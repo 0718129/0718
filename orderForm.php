@@ -36,7 +36,7 @@
                     <label for="orderProduct1" class="form-label">Product 1</label>
                     <input type="number" class="form-control" id="orderProduct1" name="orderProduct1"
                            value="0">
-                    <label for="orderProduct2" class="form-label">Product 3</label>
+                    <label for="orderProduct2" class="form-label">Product 2</label>
                     <input type="number" class="form-control" id="orderProduct2" name="orderProduct2"
                            value="0">
                     <label for="orderProduct3" class="form-label">Product 3</label>

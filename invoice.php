@@ -3,42 +3,52 @@
 <body>
 
 <?php
+
+$invoiceNumber = intval(sanitiseData($_GET["invoiceNumber"]));
+echo $invoiceNumber;
+
 // Read the contents of the file
 $currentRow = 1;
 if (($handle = fopen("orders.csv", "r")) !== FALSE) {
     while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
-        $numberOfRowsOfData = count($data);
-        $currentRow++; //Add one to the current row
+        if ($currentRow == $invoiceNumber) {
+
 
 // Customer Details
-        $cusNameFirst = $data[0];
-        $cusNameSecond = $data[1];
-        $cusAddress = $data[2];
-        $cusEmail = $data[3];
-        $cusPhone = $data[4];
+            $cusNameFirst = $data[0];
+            $cusNameSecond = $data[1];
+            $cusAddress = $data[2];
+            $cusEmail = $data[3];
+            $cusPhone = $data[4];
 
 // Product Quantities
-        $prod1Quantity = $data[5];
-        $prod2Quantity = $data[6];
-        $prod3Quantity = $data[7];
-        $prod4Quantity = $data[8];
-        $prod5Quantity = $data[9];
-        $prod1ItemCost = 3.4;
-        $prod2ItemCost = 5.0;
-        $prod3ItemCost = 12.54;
-        $prod4ItemCost = 19.77;
-        $prod5ItemCost = 1.01;
+            $prod1Quantity = $data[5];
+            $prod2Quantity = $data[6];
+            $prod3Quantity = $data[7];
+            $prod4Quantity = $data[8];
+            $prod5Quantity = $data[9];
 
-        $prod1SubTotal = $prod1Quantity * $prod1ItemCost;
-        $prod2SubTotal = $prod2Quantity * $prod2ItemCost;
-        $prod3SubTotal = $prod3Quantity * $prod3ItemCost;
-        $prod4SubTotal = $prod4Quantity * $prod4ItemCost;
-        $prod5SubTotal = $prod5Quantity * $prod5ItemCost;
-        $invoiceTotal = $prod1SubTotal + $prod2SubTotal + $prod3SubTotal + $prod4SubTotal + $prod5SubTotal;
+        }
+        $currentRow++; // Add one to the current row
     }
+    fclose($handle);    // Closes the File
+
+
+    $prod1ItemCost = 3.4;
+    $prod2ItemCost = 5.0;
+    $prod3ItemCost = 12.54;
+    $prod4ItemCost = 19.77;
+    $prod5ItemCost = 1.01;
+
+    $prod1SubTotal = $prod1Quantity * $prod1ItemCost;
+    $prod2SubTotal = $prod2Quantity * $prod2ItemCost;
+    $prod3SubTotal = $prod3Quantity * $prod3ItemCost;
+    $prod4SubTotal = $prod4Quantity * $prod4ItemCost;
+    $prod5SubTotal = $prod5Quantity * $prod5ItemCost;
+    $invoiceTotal = $prod1SubTotal + $prod2SubTotal + $prod3SubTotal + $prod4SubTotal + $prod5SubTotal;
+
 }
 ?>
-
 
 
 <!--Customer Details-->
