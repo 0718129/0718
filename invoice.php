@@ -1,4 +1,6 @@
-<?php include "template.php" ?>
+<?php include "template.php"
+/** @var $productNames */
+?>
 <title>Invoice</title>
 <body>
 
@@ -34,17 +36,13 @@ if (($handle = fopen("orders.csv", "r")) !== FALSE) {
     fclose($handle);    // Closes the File
 
 
-    $prod1ItemCost = 3.4;
-    $prod2ItemCost = 5.0;
-    $prod3ItemCost = 12.54;
-    $prod4ItemCost = 19.77;
-    $prod5ItemCost = 1.01;
 
-    $prod1SubTotal = $prod1Quantity * $prod1ItemCost;
-    $prod2SubTotal = $prod2Quantity * $prod2ItemCost;
-    $prod3SubTotal = $prod3Quantity * $prod3ItemCost;
-    $prod4SubTotal = $prod4Quantity * $prod4ItemCost;
-    $prod5SubTotal = $prod5Quantity * $prod5ItemCost;
+
+    $prod1SubTotal = $prod1Quantity * $productPrices["product1"];
+    $prod2SubTotal = $prod2Quantity * $productPrices["product2"];
+    $prod3SubTotal = $prod3Quantity * $productPrices["product3"];
+    $prod4SubTotal = $prod4Quantity * $productPrices["product4"];
+    $prod5SubTotal = $prod5Quantity * $productPrices["product5"];
     $invoiceTotal = $prod1SubTotal + $prod2SubTotal + $prod3SubTotal + $prod4SubTotal + $prod5SubTotal;
 
 }
