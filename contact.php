@@ -41,10 +41,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
     if ($formError == false) {
 
-        $csvFile = fopen(  "contact.csv", "a");
-        fwrite($csvFile, $userEmail. ",".$userMessage);
-        fclose($csvFile);
 
+       $sqlStmt = $conn->prepare("INSERT INTO contact (ContactEmail, Messages) VALUES (:ContactEmail, :Message)");
+
+
+
+//        $csvFile = fopen(  "contact.csv", "a");
+//        fwrite($csvFile, $userEmail. ",".$userMessage);
+//        fclose($csvFile);
     }
 }
 ?>
