@@ -1,5 +1,7 @@
 <!doctype html>
-<?php include "template.php" ?>
+<?php include "template.php"
+/** @var $conn */
+?>
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -42,9 +44,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($formError == false) {
 
 
-       $sqlStmt = $conn->prepare("INSERT INTO contact (ContactEmail, Messages) VALUES (:ContactEmail, :Message)");
-
-
+         $sqlStmt = $conn->prepare("INSERT INTO Contact (ContactEmail, Message) VALUES (:ContactEmail, :Message)");
+        $sqlStmt->bindParam(':ContactEmail', $userEmail);
+        $sqlStmt->bindParam(':Message', $userMessage);
+        $sqlStmt->execute();
 
 //        $csvFile = fopen(  "contact.csv", "a");
 //        fwrite($csvFile, $userEmail. ",".$userMessage);
