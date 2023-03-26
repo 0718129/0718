@@ -1,5 +1,6 @@
 <?php include "template.php"
 /** @var $productNames */
+/** @var $conn */
 ?>
 <title>Order Form</title>
 <body>
@@ -77,12 +78,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $prodQuantity5 = sanitiseData($_POST['orderProduct5']);
 
 
-    $csvFile = fopen("orders.csv", "a");
+} else {
+
+    // $csvFile = fopen("orders.csv", "a");
 // Write the string to the end of the file.
-    fwrite($csvFile, $cusNameFirst . "," . $cusNameSecond . "," . $cusAddress . "," . $cusEmail . "," . $cusPhone . "," . $prodQuantity1 . "," . $prodQuantity2 . "," . $prodQuantity3 . "," . $prodQuantity4 . "," . $prodQuantity5 . "," . "\n");
+    // fwrite($csvFile, $cusNameFirst . "," . $cusNameSecond . "," . $cusAddress . "," . $cusEmail . "," . $cusPhone . "," . $prodQuantity1 . "," . $prodQuantity2 . "," . $prodQuantity3 . "," . $prodQuantity4 . "," . $prodQuantity5 . "," . "\n");
 // Close the connection to the file.
-    fclose($csvFile);
+    // fclose($csvFile);
 }
+
+
+
+$sqlStmt = $conn->prepare("INSERT INTO Orders (OrderNumber, CustomerID, ProductID, Quantity)  VALUES (:OrderNuber, :CustomerID, :ProductID, :Quantity)")"
+      $sqlStmt->bindParam( param: 'OrderNumber', &var: $orderNumber);
+      $sqlStmt->bindParam( param: 'CustomerID', &var: $CustomerID);
+      $sqlStmt->bindParam( param: 'ProductID', &var: $ProductID);
+      $sqlStmt->bindParam( param: 'Quantity', &var: $prodquantity5);
+      $sqlStmt->execute();
 ?>
 
 
