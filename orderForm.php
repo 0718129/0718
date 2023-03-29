@@ -79,22 +79,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 
 } else {
+    // write to db
+    $orderNumber = "1"; // TODO : Fix to generate new one.
+    $customerID = "1"; // TODO: Fix to load current customer ID
+    $productID = 5; //TODO: Load Dynamically
 
-    // $csvFile = fopen("orders.csv", "a");
+
+
+
+ $sqlStmt = $conn->prepare("INSERT INTO Orders (OrderNumber, CustomerID, ProductID, Quantity) VALUES (:OrderNumber, :CustomerID, :ProductID, :Quantity)");
+        $sqlStmt->bindParam('OrderNumber', $orderNumber);
+        $sqlStmt->bindParam('CustomerID', $customerID);
+        $sqlStmt->bindParam('ProductID', $productID);
+        $sqlStmt->bindParam('Quantity', $prodQuantity5);
+        $sqlStmt->execute();
+
+
+
+
+         // $csvFile = fopen("orders.csv", "a");
 // Write the string to the end of the file.
     // fwrite($csvFile, $cusNameFirst . "," . $cusNameSecond . "," . $cusAddress . "," . $cusEmail . "," . $cusPhone . "," . $prodQuantity1 . "," . $prodQuantity2 . "," . $prodQuantity3 . "," . $prodQuantity4 . "," . $prodQuantity5 . "," . "\n");
 // Close the connection to the file.
     // fclose($csvFile);
-}
-
-
-
-$sqlStmt = $conn->prepare("INSERT INTO Orders (OrderNumber, CustomerID, ProductID, Quantity)  VALUES (:OrderNuber, :CustomerID, :ProductID, :Quantity)")"
-      $sqlStmt->bindParam( param: 'OrderNumber', &var: $orderNumber);
-      $sqlStmt->bindParam( param: 'CustomerID', &var: $CustomerID);
-      $sqlStmt->bindParam( param: 'ProductID', &var: $ProductID);
-      $sqlStmt->bindParam( param: 'Quantity', &var: $prodquantity5);
-      $sqlStmt->execute();
+    }
 ?>
 
 

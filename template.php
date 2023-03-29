@@ -20,6 +20,10 @@
                 <li class="nav-item">
                     <a class="nav-link" href="invoicehistory.php">Contact Us</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="register.php">Register</a>
+                </li>
+
 
 
         </div>
