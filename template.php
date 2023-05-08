@@ -6,9 +6,9 @@
     <title>Contact Us</title>
     <link href="css/bootstrap.min.css" rel="stylesheet">
 </head>
-<nav class="navbar navbar-expand-lg bg-body-tertiary bg-primary" data-bs-theme="dark">
+<nav class="navbar navbar-expand-lg bg-body-tertiary bg-secondary" data-bs-theme="dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#"><img src='https://hips.hearstapps.com/hmg-prod/images/dwayne-johnson-attends-the-jumanji-the-next-level-uk-film-news-photo-1575726701.jpg' width="100"></a>
+        <a class="navbar-brand" href="#"><img src='https://www.logolynx.com/images/logolynx/d3/d3d6d7529b8fa267ddacf9c3e91186ab.jpeg' width="100"></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
