@@ -1,5 +1,4 @@
 <?php
-
 /**  @var $conn */
 
 if (isset($_POST['login'])) {
@@ -16,6 +15,7 @@ if (isset($_POST['login'])) {
             $_SESSION["FirstName"] = $row['FirstName'];
             $_SESSION['EmailAddress'] = $row['EmailAddress'];
             $_SESSION['AccessLevel'] = $row['AccessLevel'];
+            $_SESSION['CustomerID'] = $row['CustomerID'];
         } else {
             header("location:index.php");
             echo "<div class='alert alert-danger'>Invalid username or password</div>";

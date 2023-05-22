@@ -1,54 +1,67 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Contact Us</title>
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-</head>
-<nav class="navbar navbar-expand-lg bg-body-tertiary bg-secondary" data-bs-theme="dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="#"><img src='https://www.logolynx.com/images/logolynx/d3/d3d6d7529b8fa267ddacf9c3e91186ab.jpeg' width="100"></a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="index.php">Home</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="invoicehistory.php">Contact Us</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="register.php">Register</a>
-                </li>
+<?php include "template.php";
+/**  @var $conn */
+?>
+    <title>User Registration</title>
+    <h1 class='text-primary'>User Registration</h1>
 
+    <!-- Front End -->
+    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" enctype="multipart/form-data">
+        <div class="container-fluid">
+            <div class="row">
+                <!--Customer Details-->
 
+                <div class="col-md-6">
+                    <h2>Account Details</h2>
+                    <p>Please enter wanted username and password:</p>
+                    <p>Email Address<input type="text" name="username" class="form-control" required="required"></p>
+                    <p>Password<input type="password" name="password" class="form-control" required="required"></p>
 
+                </div>
+                <div class="col-md-6">
+                    <h2>More Details</h2>
+                    <!--Product List-->
+                    <p>Please enter More Personal Details:</p>
+                    <p>First Name<input type="text" name="firstName" class="form-control" required="required"></p>
+                    <p>Second Name<input type="text" name="secondName" class="form-control" required="required"></p>
+                    <p>Address<input type="text" name="address" class="form-control" required="required"></p>
+                    <p>Phone Number<input type="text" name="phoneNumber" class="form-control" required="required"></p>
+                </div>
+            </div>
         </div>
-    </div>
-</nav>
+        <input type="submit" name="formSubmit" value="Submit">
+    </form>
+
+
 <?php
+// Back End
+if ($_SERVER["REQUEST_METHOD"] == "POST") {   // Will return true when the user presses the submit button
+    $username = sanitiseData($_POST['username']);
+    $password = sanitiseData($_POST['password']);
+    $firstName = sanitiseData($_POST['firstName']);
+    $secondName = sanitiseData($_POST['secondName']);
+    $address = sanitiseData($_POST['address']);
+    $phoneNumber = sanitiseData($_POST['phoneNumber']);
 
-session_start();
+    // Check if username/email address already exists in the database.
+    $query = $conn->query("SELECT COUNT(*) FROM Customers WHERE EmailAddress='$username'");
+    $data = $query->fetchArray();
+    $numberOfUsers = (int)$data[0];
 
-$conn = new SQLite3("DB") or die("Unable to open database");
+    if ($numberOfUsers > 0) {  // username already exists.
+        echo "Sorry, that username already exists";
+    } else {
+        // the username entered is unique (doesn't already exist)
+        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
-$productNames = array("product1"=>"Darth Vader Helmet", "product2"=>"Grogu Plush", "product3"=>"ROTJ Jigsaw", "product4"=>"Aftermath", "product5"=>"Alphabet Squadron");
-$productPrices= array("product1"=>299.0, "product2"=>32.95, "product3"=>219.95, "product4"=>24.95, "product5"=>24.95);
-function footer():string
-{
- date_default_timezone_set( 'Australia/Canberra');
-    $filename = basename($_SERVER["SCRIPT_FILENAME"]);
-    $footer = "This page was last modified: " . date("F d Y H:i:s.", filemtime($filename));
-    return $footer;
+        $sqlStmt = $conn->prepare("INSERT INTO Customers (EmailAddress, HashedPassword, FirstName, SecondName, Address, PhoneNumber) VALUES (:EmailAddress, :HashedPassword, :FirstName, :SecondName, :Address, :PhoneNumber)");
+        $sqlStmt->bindParam(':EmailAddress', $username);
+        $sqlStmt->bindParam(':HashedPassword', $hashedPassword);
+        $sqlStmt->bindParam(':FirstName', $firstName);
+        $sqlStmt->bindParam(':SecondName', $secondName);
+        $sqlStmt->bindParam(':Address', $address);
+        $sqlStmt->bindParam(':PhoneNumber', $phoneNumber);
+        $sqlStmt->execute();
+
+    }
 }
-
-function sanitiseData($unsanitisedData):string
-{
-    $unsanitisedData = trim($unsanitisedData);
-    $unsanitisedData = stripslashes($unsanitisedData);
-    $sanitisedData = htmlspecialchars($unsanitisedData);
-    return $sanitisedData;
-}
+?>

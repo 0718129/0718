@@ -2,7 +2,7 @@
 <?php include 'login.php'; ?>
 <title>PHP Template</title>
 <body>
-<h1>shoe4cheap</h1>
+<h1>Star Wars Shopfront</h1>
 <div class="container-fluid">
     <div class="row">
         <div class="col-6">
@@ -33,11 +33,16 @@
 </div>
 
 
-<img src='https://footwearnews.com/wp-content/uploads/2021/08/012234_01-1.jpeg' width="100"></a>
-
-
+<?php echo footer(); ?>
 </body>
-<script src="js/bootstrap.bundle.min.js" ></script>
+
 </html>
 
 
+<!--
+ <div class="col-md-6">
+        </div>
+        <div class="col-md-6">
+            <?php if (!isset($_SESSION["FirstName"])) : ?>
+            <?php endif; ?>
+-->
