@@ -2,7 +2,7 @@
 <?php include 'login.php'; ?>
 <title>PHP Template</title>
 <body>
-<h1>Star Wars Shopfront</h1>
+<h1>Shoes4Cheap</h1>
 <div class="container-fluid">
     <div class="row">
         <div class="col-6">

@@ -35,7 +35,7 @@ if (isset($_POST['Code']) && $_POST['Code'] != "") {
     } else {
         $array_keys = array_keys($_SESSION["ShoppingCart"]);
         if (in_array($code, $array_keys)) {
-            $status = "<div class='box' style='color:red;'>Product is already added to your cart!</div>";
+            $status = "<div class='box' style='color:#1100ff;'>Product is already added to your cart!</div>";
         } else {
             $_SESSION["ShoppingCart"] = array_merge(
                 $_SESSION["ShoppingCart"], $cartArray

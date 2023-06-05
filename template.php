@@ -1,68 +1,95 @@
 <?php session_start(); ?>
-<?php include "template.php";
-/**  @var $conn */
-?>
-    <title>User Registration</title>
-    <h1 class='text-primary'>User Registration</h1>
 
-    <!-- Front End -->
-    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" enctype="multipart/form-data">
-        <div class="container-fluid">
-            <div class="row">
-                <!--Customer Details-->
+    <!doctype html>
+    <html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+</head>
 
-                <div class="col-md-6">
-                    <h2>Account Details</h2>
-                    <p>Please enter wanted username and password:</p>
-                    <p>Email Address<input type="text" name="username" class="form-control" required="required"></p>
-                    <p>Password<input type="password" name="password" class="form-control" required="required"></p>
+<nav class="navbar navbar-expand-sm bg-info">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#"> <img src="images/logo.png" width="40rem" height="40rem"> </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="index.php">Main-Page</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="contact.php">Find us</a>
+                </li>
 
-                </div>
-                <div class="col-md-6">
-                    <h2>More Details</h2>
-                    <!--Product List-->
-                    <p>Please enter More Personal Details:</p>
-                    <p>First Name<input type="text" name="firstName" class="form-control" required="required"></p>
-                    <p>Second Name<input type="text" name="secondName" class="form-control" required="required"></p>
-                    <p>Address<input type="text" name="address" class="form-control" required="required"></p>
-                    <p>Phone Number<input type="text" name="phoneNumber" class="form-control" required="required"></p>
-                </div>
-            </div>
+                <?php
+                if (isset($_SESSION["FirstName"])) {
+                    echo '<li class="nav-item" ><a class="nav-link" href = "orderForm.php">Order Form </a ></li >';
+                    echo '<li class="nav-item" ><a class="nav-link" href = "invoice.php">Invoices</a ></li >';
+                } else {
+                    echo '<li class="nav-item"><a class="nav-link" href="register.php">Register</a></li>';
+                }
+                if (isset($_SESSION["AccessLevel"])) {
+                    if ($_SESSION["AccessLevel"] == 1) {
+                        ?>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
+                               aria-expanded="false">
+                                Product Management
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li><a class="dropdown-item" href="productAdd.php">Add Products</a></li>
+                                <li><a class="dropdown-item" href="productList.php">Product List</a></li>
+                            </ul>
+                        </li>
+                        <?php
+                    }
+                }
+                ?>
+            </ul>
         </div>
-        <input type="submit" name="formSubmit" value="Submit">
-    </form>
-
-
+        <?php
+        if (isset($_SESSION["FirstName"])) {
+            echo '<div class="bg-primary">Welcome, ' . $_SESSION["FirstName"] . '!<a class="nav-link" href="logout.php">Logout</a></div>';
+        }
+        ?>
+    </div>
+</nav>
 <?php
-// Back End
-if ($_SERVER["REQUEST_METHOD"] == "POST") {   // Will return true when the user presses the submit button
-    $username = sanitiseData($_POST['username']);
-    $password = sanitiseData($_POST['password']);
-    $firstName = sanitiseData($_POST['firstName']);
-    $secondName = sanitiseData($_POST['secondName']);
-    $address = sanitiseData($_POST['address']);
-    $phoneNumber = sanitiseData($_POST['phoneNumber']);
-
-    // Check if username/email address already exists in the database.
-    $query = $conn->query("SELECT COUNT(*) FROM Customers WHERE EmailAddress='$username'");
-    $data = $query->fetchArray();
-    $numberOfUsers = (int)$data[0];
-
-    if ($numberOfUsers > 0) {  // username already exists.
-        echo "Sorry, that username already exists";
-    } else {
-        // the username entered is unique (doesn't already exist)
-        $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
-
-        $sqlStmt = $conn->prepare("INSERT INTO Customers (EmailAddress, HashedPassword, FirstName, SecondName, Address, PhoneNumber) VALUES (:EmailAddress, :HashedPassword, :FirstName, :SecondName, :Address, :PhoneNumber)");
-        $sqlStmt->bindParam(':EmailAddress', $username);
-        $sqlStmt->bindParam(':HashedPassword', $hashedPassword);
-        $sqlStmt->bindParam(':FirstName', $firstName);
-        $sqlStmt->bindParam(':SecondName', $secondName);
-        $sqlStmt->bindParam(':Address', $address);
-        $sqlStmt->bindParam(':PhoneNumber', $phoneNumber);
-        $sqlStmt->execute();
-
-    }
+if (isset($_SESSION['flash_message'])) {
+    $message = $_SESSION['flash_message'];
+    unset($_SESSION['flash_message']);
+    ?>
+    <div class="position-absolute bottom-0 end-0">
+        <?= $message ?>
+    </div>
+    <?php
 }
 ?>
+<script src="js/bootstrap.bundle.min.js"></script>
+
+<?php
+
+
+$conn = new SQLite3("db") or die("Unable to open database");
+
+
+$productNames = array("product1" => "Jordan 1s", "product2" => "Jordan 4s", "product3" => "Air jordans HighTop", "product4" => "Air Force 1s", "product5" => "Jordan 3s");
+$productPrices = array("product1" => 299.0, "product2" => 32.95, "product3" => 219.95, "product4" => 24.95, "product5" => 25.95);
+function footer(): string
+{
+    date_default_timezone_set('Australia/Canberra');
+    $filename = basename($_SERVER["SCRIPT_FILENAME"]);
+    $footer = "This page was last modified: " . date("F d Y H:i:s.", filemtime($filename));
+    return $footer;
+}
+
+function sanitiseData($unsanitisedData): string
+{
+    $unsanitisedData = trim($unsanitisedData);
+    $unsanitisedData = stripslashes($unsanitisedData);
+    $sanitisedData = htmlspecialchars($unsanitisedData);
+    return $sanitisedData;
+}

@@ -1,11 +1,8 @@
-
-
-
 <?php include "template.php";
 /**  @var $conn */
 ?>
 <title>User Registration</title>
-<h1 class='text-primary'>User Registration</h1>
+<h1 class='text-secondary'>User Registration</h1>
 
 <!-- Front End -->
 <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post" enctype="multipart/form-data">
