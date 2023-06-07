@@ -1,3 +1,4 @@
+<?php include 'login.php'; ?>
 <?php session_start(); ?>
 
     <!doctype html>
@@ -8,9 +9,9 @@
     <link href="css/bootstrap.min.css" rel="stylesheet">
 </head>
 
-<nav class="navbar navbar-expand-sm bg-info">
+<nav class="navbar navbar-expand-sm bg-secondary">
     <div class="container-fluid">
-        <a class="navbar-brand" href="#"> <img src="images/logo.png" width="40rem" height="40rem"> </a>
+        <a class="navbar-brand" href="#"> <img src="https://www.logolynx.com/images/logolynx/d3/d3d6d7529b8fa267ddacf9c3e91186ab.jpeg" width="100rem" height="100rem"> </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
                 aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -18,7 +19,7 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="index.php">Main-Page</a>
+                    <a class="nav-link active" aria-current="page" href="index.php">Log-In</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="contact.php">Find us</a>
