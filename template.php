@@ -1,5 +1,5 @@
-<?php include 'login.php'; ?>
 <?php session_start(); ?>
+
 
     <!doctype html>
     <html lang="en">
@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="css/bootstrap.min.css" rel="stylesheet">
 </head>
+
 
 <nav class="navbar navbar-expand-sm bg-secondary">
     <div class="container-fluid">
@@ -25,10 +26,11 @@
                     <a class="nav-link" href="contact.php">Find us</a>
                 </li>
 
+
                 <?php
                 if (isset($_SESSION["FirstName"])) {
-                    echo '<li class="nav-item" ><a class="nav-link" href = "orderForm.php">Order Form </a ></li >';
-                    echo '<li class="nav-item" ><a class="nav-link" href = "invoice.php">Invoices</a ></li >';
+                    echo '<li class="nav-item" ><a class="nav-link" href = "orderForm.php"> Order Form </a ></li >';
+                    echo '<li class="nav-item" ><a class="nav-link" href = "invoiceList.php"> Invoice list</a ></li >';
                 } else {
                     echo '<li class="nav-item"><a class="nav-link" href="register.php">Register</a></li>';
                 }
@@ -62,10 +64,14 @@
 if (isset($_SESSION['flash_message'])) {
     $message = $_SESSION['flash_message'];
     unset($_SESSION['flash_message']);
+//    echo $message;
     ?>
     <div class="position-absolute bottom-0 end-0">
         <?= $message ?>
+
     </div>
+
+
     <?php
 }
 ?>
@@ -74,7 +80,7 @@ if (isset($_SESSION['flash_message'])) {
 <?php
 
 
-$conn = new SQLite3("db") or die("Unable to open database");
+$conn = new SQLite3("DB") or die("Unable to open database");
 
 
 $productNames = array("product1" => "Jordan 1s", "product2" => "Jordan 4s", "product3" => "Air jordans HighTop", "product4" => "Air Force 1s", "product5" => "Jordan 3s");
