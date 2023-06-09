@@ -1,5 +1,6 @@
 <?php
 include "template.php";
+/**  @var $conn */
 /*
  * The invoices page has a number of use cases to satisfy:
         1. If user is not logged in, then redirect them to index.php
@@ -15,21 +16,12 @@ include "template.php";
 if (!isset($_SESSION["CustomerID"])) {
     // Case 1. The user is not logged in.
     header("Location:index.php");
-} else {
+}
 if (empty($_GET["order"])) {
-    // no 'order' variable detected in the url.
+    // Case 2 - no 'order' variable detected in the url.
     $custID = $_SESSION['CustomerID'];
-
-    if ($_SESSION["AccessLevel"] == 1) {
-        // Case 5 - Generate a list of all invoices for administrators
-        $query = $conn->query("SELECT OrderNumber FROM Orders");
-        $count = $conn->querySingle("SELECT OrderNumber FROM Orders");
-    } else {
-        // Case 2 - Generate a list of open invoices for user
-        $query = $conn->query("SELECT OrderNumber FROM Orders WHERE CustomerID='$custID' AND Status='OPEN'");
-        $count = $conn->querySingle("SELECT OrderNumber FROM Orders WHERE customerID='$custID' AND status='OPEN'");
-    }
-
+    $query = $conn->query("SELECT OrderNumber FROM Orders WHERE CustomerID='$custID' AND Status='OPEN'");
+    $count = $conn->querySingle("SELECT OrderNumber FROM Orders WHERE customerID='$custID' AND status='OPEN'");
     $orderCodesForUser = [];
 
     if ($count > 0) {  // Has the User made orders previously?
@@ -38,66 +30,23 @@ if (empty($_GET["order"])) {
             $orderCode = $data[0];
             array_push($orderCodesForUser, $orderCode);
         }
-        //Gets the unique order numbers from the extracted table above.
+//Gets the unique order numbers from the extracted table above.
         $unique_orders = array_unique($orderCodesForUser);
-        echo "<div class='container-fluid'>";
-        // Produce a list of links of the Orders for the user.
-        foreach ($unique_orders as $order_ID) {
-            ?>
-            <div class='row'>
-                <div class='col-12'><a href='invoice.php?order=<?= $order_ID ?>'>Order : <?= $order_ID ?></a></div>
-            </div>
-            <?php
-        }
-        echo "</div>";
     } else {
-        // Case 4: No orders found for the logged in user.
-        echo "<div class='badge bg-danger text-wrap fs-5'>You don't have any open orders. Please make an order to view them</div>";
+        // Case 4: No orders found for the log-in user.
+        echo "<div class='badge bg-danger text-wrap fs-5'>Buy something, its not that expensive. :D</div>";
 
     }
 } else {
-// Case 3 - 'order' variable detected.
-$orderNumber = $_GET["order"];
-$query = $conn->query("SELECT p.ProductName, p.Price, o.Quantity, p.Price*o.Quantity as SubTotal, o.OrderDate, o.Status FROM Orders o INNER JOIN Products p on o.ProductID = p.ProductID WHERE o.OrderNumber='$orderNumber'");
-$total = 0;
-    ?>
-    <div class='container-fluid'>
-    <div class='row'>
-        <div class='col text-success display-6'>Product Name</div>
-        <div class='col text-success display-6'>Price</div>
-        <div class='col text-success display-6'>Quantity</div>
-        <div class='col text-success display-6'>Subtotal</div>
-    </div>
-
-    <?php
-    while ($data = $query->fetchArray()) {
-        echo "<div class='row'>";
-        $productName = $data["ProductName"];
-        $price = $data["Price"];
-        $quantity = $data["Quantity"];
-        $subtotal = $data["SubTotal"];
-        $orderDate = $data["OrderDate"];
-        $status = $data["Status"];
-        $total = $total + $subtotal; // Running Total
-        echo "<div class='col'>" . $productName . "</div>";
-        echo "<div class='col'>$" . $price . "</div>";
-        echo "<div class='col'>" . $quantity . "</div>";
-        echo "<div class='col'>$" . $subtotal . "</div>";
-
-        echo "</div>";
+    // Case 3 - 'order' variable detected.
+    echo "<div class='container-fluid'>";
+// Produce a list of links of the Orders for the user.
+    foreach ($unique_orders as $order_ID) {
+        ?>
+        <div class='row'>
+            <div class='col-12'><a href='invoice.php?order=<?= $order_ID ?>'>Order : <?= $order_ID ?></a></div>
+        </div>
+        <?php
     }
-    ?>
-    <!-- Invididual Rows here -->
-
-    <div class='row'>
-        <div class='col'></div>
-        <div class='col'></div>
-        <div class='col display-6'>Total : $<?= $total ?></div>
-    </div>
-    <div class='row'>
-        <div class='col'></div>
-        <div class='col'></div>
-        <div class='col'><?= $orderDate ?></div>
-    </div>
-
-    <?php
+    echo "</div>";
+}
