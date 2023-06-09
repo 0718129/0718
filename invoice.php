@@ -9,7 +9,6 @@ include "template.php";
         4. Inform users if they have not previously made any orders.
         5. Administrators to view all orders
         6. Administrators can OPEN and CLOSE orders
-
   @var $conn
  */
 
