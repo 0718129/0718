@@ -1,6 +1,5 @@
 <?php
 include "template.php";
-/**  @var $conn */
 /*
  * The invoices page has a number of use cases to satisfy:
         1. If user is not logged in, then redirect them to index.php
@@ -12,7 +11,6 @@ include "template.php";
 
   @var $conn
  */
-
 if (!isset($_SESSION["CustomerID"])) {
     // Case 1. The user is not logged in.
     header("Location:index.php");
@@ -33,20 +31,10 @@ if (empty($_GET["order"])) {
 //Gets the unique order numbers from the extracted table above.
         $unique_orders = array_unique($orderCodesForUser);
     } else {
-        // Case 4: No orders found for the log-in user.
-        echo "<div class='badge bg-danger text-wrap fs-5'>Buy something, its not that expensive. :D</div>";
+        // Case 4: No orders found for the logged in user.
+        echo "<div class='badge bg-danger text-wrap fs-5'>You don't have any open orders. Please make an order to view them</div>";
 
     }
 } else {
     // Case 3 - 'order' variable detected.
-    echo "<div class='container-fluid'>";
-// Produce a list of links of the Orders for the user.
-    foreach ($unique_orders as $order_ID) {
-        ?>
-        <div class='row'>
-            <div class='col-12'><a href='invoice.php?order=<?= $order_ID ?>'>Order : <?= $order_ID ?></a></div>
-        </div>
-        <?php
-    }
-    echo "</div>";
 }
