@@ -1,5 +1,5 @@
 <?php include "template.php" ?>
-<title>Invoice List</title>
+<title>Invoice history</title>
 <body>
 
 <?php

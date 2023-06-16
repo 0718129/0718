@@ -6,7 +6,6 @@
 
 <h1 class="text-primary">Order Form</h1>
 
-
 <?php
 $status = "";
 if (isset($_POST['Code']) && $_POST['Code'] != "") {
